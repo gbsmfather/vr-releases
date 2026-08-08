@@ -333,16 +333,6 @@
   .note .ic { flex: none; font-size: 17px; line-height: 1.4; }
   .note b { color: var(--gold); }
 
-  /* 채우기 안내용 플레이스홀더 — 내용을 채운 뒤 이 블록은 지우세요 */
-  .placeholder {
-    margin: 6px 0 0; padding: 22px 22px;
-    border: 1.5px dashed var(--line-strong); border-radius: 14px;
-    background: var(--surface-2); color: var(--muted);
-    font-size: 15.5px; line-height: 1.7;
-  }
-  .placeholder b { color: var(--accent-ink); }
-  .placeholder code { font-size: .85em; }
-
   .quote {
     margin: 16px 0 0; padding: 14px 18px;
     border-left: 3px solid var(--accent);
@@ -384,14 +374,14 @@
     <p class="eyebrow gold">이얀 VR V7 · 장기투자 리밸런싱</p>
     <h1>VR 러너<span class="mark">.</span></h1>
     <p class="lede">하루 한 번, 시트를 읽어 <b>종가에 리밸런싱</b>하는 장기투자 러너.
-      아바타와 <b>독립된 별도 트레이(vr.exe)</b>로 실행됩니다.</p>
+      아바타와 <b>독립된 별도 트레이(VR.exe)</b>로 실행됩니다.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://github.com/gbsmfather/vr-releases/releases" target="_blank" rel="noopener">최신 버전 다운로드 <span>→</span></a>
       <a class="btn btn-ghost" href="#prep">준비물부터 보기 ↓</a>
     </div>
     <div class="hero-meta">
       <span class="chip">VR 러너</span>
-      <span class="chip-muted">Windows · 별도 트레이(vr.exe)</span>
+      <span class="chip-muted">Windows · 별도 트레이(VR.exe)</span>
       <span class="chip-muted">실전(실계좌) 동작</span>
     </div>
   </div>
@@ -407,34 +397,123 @@
 </nav>
 
 <main>
-  <!-- ═══════════════════════════════════════════════════════════════════
-       내용은 각 섹션의 .placeholder 블록을 지우고 채워 넣으면 됩니다.
-       스타일(카드/표/단계/콜아웃 등)은 아바타 가이드와 동일하게 준비돼 있어,
-       필요한 마크업을 그대로 가져다 쓰면 됩니다. — 골격만 우선 배포.
-       ═══════════════════════════════════════════════════════════════════ -->
-
   <!-- 01 · 준비물 -->
   <section id="prep" class="container">
     <div class="sec-head">
       <span class="sec-kicker"><span class="n">01</span> 시작 전 준비물</span>
-      <h2>VR러너 추가에 필요한 자료</h2>
-      <p>VR러너를 등록하기 전에 외부 서비스에서 발급·설정할 값들을 여기에 정리합니다.</p>
+      <h2>VR러너 추가에 필요한 자료 4가지</h2>
+      <p>1‑3·1‑4는 <b>아바타와 절대 같은 값을 쓰면 안 됩니다</b> — 같은 계좌(앱키)는 기동 시 즉시
+        차단되고, 같은 봇 토큰은 텔레그램 폴링 충돌(409)을 일으킵니다. 각 카드가 만들어 내는 값이
+        곧 설정 마법사에 입력할 항목입니다.</p>
     </div>
-    <div class="placeholder">✍️ <b>여기에 준비물 내용을 채우세요.</b> 예) 이얀 VR V7 시트 사본, 서비스계정 JSON + 시트 공유,
-      키움 앱키·시크릿키(별도 계좌), 텔레그램 봇 토큰·chat_id. 카드형 그리드가 필요하면 아바타 가이드의
-      <code>.prep-grid</code> / <code>.card</code> 마크업을 그대로 복사해 쓰세요.</div>
+
+    <div class="prep-grid">
+      <article class="card">
+        <div class="card-top">
+          <div class="card-num tnum">01</div>
+          <div><div class="card-src">Google Sheets</div></div>
+        </div>
+        <h3>이얀 VR V7 시트 사본 만들기</h3>
+        <p>VR러너는 매수·매도 사다리·자금 상태를 시트에서 읽고 체결 결과를 기록합니다. 사용 중인
+          “이얀 VR V7” 시트를 내 계정으로 복사해 씁니다.</p>
+        <ul>
+          <li>구글 드라이브에서 <b>파일 → 사본 만들기</b></li>
+          <li>사본의 <b>주소창 URL 전체 복사</b></li>
+          <li>사본은 GOOGLEFINANCE 로 시세가 자동 갱신됩니다 — <b>Data 탭은 그대로 둡니다</b></li>
+        </ul>
+        <div class="feeds">→ 마법사 <b>시트 URL</b></div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div class="card-num tnum">02</div>
+          <div><div class="card-src">Google Cloud Console</div></div>
+        </div>
+        <h3>서비스계정 JSON + 시트 공유</h3>
+        <p>아바타를 이미 쓰고 있다면 <b>기존 서비스계정을 재사용</b>할 수 있습니다 — 이 VR 시트
+          사본에 그 이메일을 다시 공유만 하면 됩니다.</p>
+        <ul>
+          <li><b>Sheets API</b> 사용 설정(신규 생성 시)</li>
+          <li>서비스계정 생성 → <b>키 추가 → JSON</b> 다운로드</li>
+          <li>JSON의 <code>client_email</code> 을 시트에 <b>편집자로 공유</b></li>
+          <li class="warn">공유 누락 시 시트 접근 오류</li>
+        </ul>
+        <div class="feeds">→ 마법사 <b>서비스계정 JSON</b>(파일)</div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div class="card-num tnum">03</div>
+          <div><div class="card-src">openapi.kiwoom.com</div></div>
+        </div>
+        <h3>(별도) 키움 앱키·시크릿키 + IP 등록</h3>
+        <p>주문·조회·시세·환전을 키움 REST API로 처리합니다. <b>아바타와 다른 별도 실전 계좌</b>로
+          키를 발급받고 실행 PC의 IP를 등록합니다.</p>
+        <ul>
+          <li class="warn"><b>VR 전용 별도 계좌</b> — 아바타 계좌 재사용 불가(기동 즉시 차단)</li>
+          <li>앱키·시크릿키 발급 <b>(다운로드 1회)</b></li>
+          <li>실행 PC <b>공인 IP 등록</b>(최대 10개)</li>
+          <li class="warn">미등록 IP 호출은 거부됨</li>
+        </ul>
+        <div class="feeds">→ 마법사 <b>앱키</b> · <b>시크릿키</b></div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div class="card-num tnum">04</div>
+          <div><div class="card-src">Telegram</div></div>
+        </div>
+        <h3>(별도) 텔레그램 봇 토큰 + chat_id</h3>
+        <p>실행·체결·환전 알림과 조회/일시정지 명령에 씁니다. <b>아바타와 다른 새 봇</b>을 만드세요.</p>
+        <ul>
+          <li class="warn"><b>VR 전용 새 봇</b> — 같은 토큰이면 409 폴링 충돌</li>
+          <li><b>@BotFather</b> → <code>/newbot</code> → <b>봇 토큰</b></li>
+          <li>chat_id: 봇에 메시지 후 <code>getUpdates</code></li>
+          <li>chat_id는 아바타와 <b>같아도 무방</b>(알림만 한 대화에 섞임)</li>
+        </ul>
+        <div class="feeds">→ 마법사 <b>봇 토큰</b> · <b>chat_id</b></div>
+      </article>
+    </div>
+
+    <div class="note">
+      <span class="ic">🔒</span>
+      <div><b>앱키·시크릿키·서비스계정 JSON·봇 토큰</b> 은 실제 계좌와 시트의 열쇠입니다. 타인과 공유하거나 공개된 곳에 올리지 마세요.</div>
+    </div>
   </section>
 
   <!-- 02 · 시트 설정 -->
   <section id="sheet" class="container">
     <div class="sec-head">
       <span class="sec-kicker"><span class="n">02</span> 시트 설정</span>
-      <h2>이얀 VR V7 시트 — 채울 곳</h2>
-      <p>내 VR 시트 사본에서 실제로 손대야 할 칸만 안내합니다.</p>
+      <h2>Tracker 값 채우기 (Data 시세는 자동)</h2>
+      <p>준비물 01에서 만든 <b>내 VR 시트 사본</b>을 열어 Tracker 탭의 몇 개 값만 채우면 됩니다.
+        <b>Data 탭(시세)은 GOOGLEFINANCE 로 자동 갱신되니 그대로 두세요</b> — 러너는 Data 를 읽기만 합니다.</p>
     </div>
-    <div class="placeholder">✍️ <b>여기에 시트 설정 내용을 채우세요.</b> 스크린샷은 <code>assets/</code> 폴더에 넣고
-      <code>&lt;img src="assets/파일명.png"&gt;</code> 로 참조합니다. 표가 필요하면 <code>.tablewrap</code> /
-      <code>&lt;table&gt;</code> 마크업을 사용하세요.</div>
+
+    <div class="subhead"><span class="tag">Tracker</span> 채울 값</div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>셀</th><th>이름</th><th>무엇인가</th><th>넣을 값</th></tr></thead>
+        <tbody>
+          <tr><td><code>B4</code></td><td><b>종목</b></td><td>운용할 종목 티커</td><td>예: <code>TQQQ</code></td></tr>
+          <tr><td><code>B5</code></td><td><b>시작일</b></td><td>전략(V 목표선) 시작일</td><td>최초 설정 시 1회</td></tr>
+          <tr><td><code>B7</code></td><td><b>적립금액(USD)</b></td><td>사이클 시작일마다 원→달러로 자동 환전할 금액</td><td>예(가상): <code>$100</code>, <code>0</code>=끔</td></tr>
+          <tr><td><code>B8</code></td><td><b>수수료율</b></td><td>매매 수수료율</td><td>시트 기본값 유지 권장</td></tr>
+          <tr><td><code>B9</code></td><td><b>사다리 단계</b></td><td>매수·매도 단계 수(1~12)</td><td>시트 기본값 권장</td></tr>
+          <tr><td><code>B10</code></td><td><b>리밸런싱 주기</b></td><td>몇 주마다 리밸런싱할지</td><td>시트 기본값 권장</td></tr>
+          <tr><td><code>B11</code></td><td><b>거래 모드</b></td><td>실거래 여부</td><td><b>반드시 <code>1</code></b>(실행 필수 조건)</td></tr>
+          <tr><td><code>B12</code></td><td><b>사다리 폭</b></td><td>사다리 단당 가격 간격</td><td>시트 기본값 권장</td></tr>
+          <tr><td><code>B14</code></td><td><b>인출 모드</b></td><td><code>1</code>=자동 인출 켬</td><td>정기 인출 원하면 <code>1</code></td></tr>
+          <tr><td><code>B15</code></td><td><b>인출 시작일</b></td><td>이 날부터 4주마다 인출 발동</td><td><code>B14=1</code> 일 때만</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><span class="ic">💡</span><div><b><code>B16</code>(인출액)은 손대지 마세요</b> — 보유 자산(<code>K7</code>)의 일정 비율로 시트가 자동 계산합니다. K열 상태·사다리표(<code>P5:W16</code>)도 전부 자동 계산이라 건드리지 않습니다.</div></div>
+
+    <div class="subhead" style="margin-top:40px"><span class="tag gold">시세</span> Data 탭은 그대로 둡니다 — 자동 로딩</div>
+    <p style="margin:0 0 14px; color:var(--ink-soft); font-size:16px">Data 탭은 <code>A1</code> 셀의 <code>GOOGLEFINANCE</code> 수식이 시세 전체를 <b>자동으로 채웁니다</b>.
+      VR러너는 이 값을 <b>읽기만</b> 하고 절대 쓰지 않으므로, Data 탭은 <b>손대지 말고 그대로 두면 됩니다</b>(예전의 “값 고정 마이그레이션”은 필요 없어졌습니다).</p>
+    <div class="note"><span class="ic">⚠️</span><div>Data 탭에 <b>직접 값을 써넣지 마세요</b> — GOOGLEFINANCE 자동 영역(스필)을 덮어쓰면 표가 <code>#REF!</code> 로 무너집니다. 시세가 며칠 지연돼 04장 “입력 확인”이나 매매 안전장치에서 <b>“가격 지연”</b>으로 걸리면, 시트 메뉴 <b>[VR+] &gt; 가격 새로고침</b>으로 갱신하세요(러너가 대신 쓰지 않습니다).</div></div>
   </section>
 
   <!-- 03 · 다운로드·설치 -->
@@ -442,15 +521,17 @@
     <div class="sec-head">
       <span class="sec-kicker"><span class="n">03</span> 다운로드 &amp; 설치</span>
       <h2>받아서 실행하면 트레이에 상주합니다</h2>
-      <p>VR 러너는 설치가 필요 없는 단일 실행 파일(<code>vr.exe</code>)입니다. 아바타 트레이와 별개로 동작합니다.</p>
+      <p>VR 러너는 설치가 필요 없는 단일 실행 파일(<code>VR.exe</code>)입니다. 아바타 트레이(<code>Avatar.exe</code>)와는
+        완전히 별개 프로그램이라, 같은 PC에 둘 다 설치해도 서로 독립적으로 동작합니다.</p>
     </div>
     <ol class="steps two">
-      <li><b>릴리즈 페이지</b>에서 최신 <code>vr.exe</code> 를 내려받습니다(준비되면 여기에서 배포).
+      <li><b>릴리즈 페이지</b>에서 최신 <code>VR.exe</code> 를 내려받습니다. 최상단 최신 릴리즈의 첨부 파일을 받으세요.
         <div class="urlbox">https://github.com/gbsmfather/vr-releases/releases</div></li>
-      <li>받은 <code>vr.exe</code> 를 원하는 폴더에 두고 <b>더블클릭</b>해 실행합니다.</li>
+      <li>받은 <code>VR.exe</code> 를 원하는 폴더(예: <code>C:\VR\</code>)에 두고 <b>더블클릭</b>해 실행합니다.</li>
+      <li><b>“Windows의 PC 보호”</b>(SmartScreen) 경고가 뜨면 <b>추가 정보 → 실행</b> 을 누릅니다.</li>
+      <li>작업표시줄 시계 옆 <b>트레이에 VR 아이콘</b>이 나타납니다(아바타 아이콘과 다릅니다 — 둘 다 실행 중이면 두 개가 보입니다). 안 보이면 <code>^</code>(숨겨진 아이콘 표시)를 확인하세요.</li>
     </ol>
-    <div class="placeholder">✍️ <b>세부 설치·SmartScreen·트레이 아이콘 안내를 여기에 채우세요.</b>
-      아바타 가이드의 03 섹션 흐름을 참고하면 됩니다.</div>
+    <div class="note"><span class="ic">🔄</span><div><b>업데이트는 자동입니다.</b> VR 트레이는 매일 <b>프리장 시작 때</b> VR 전용 릴리즈에서 새 버전을 확인해 스스로 업데이트하고, 실행 중이던 VR러너는 업데이트 후 <b>자동으로 다시 시작</b>됩니다(아바타 업데이트와는 완전히 분리된 경로입니다 — 서로의 버전·릴리즈에 영향을 주지 않습니다). 지금 바로 확인하려면 트레이 <b>우클릭 → “업데이트 확인”</b> 을 누르세요.</div></div>
   </section>
 
   <!-- 04 · VR러너 추가 -->
@@ -458,10 +539,29 @@
     <div class="sec-head">
       <span class="sec-kicker"><span class="n">04</span> VR러너 추가 · 설정 마법사</span>
       <h2>준비한 값을 넣어 계좌를 등록</h2>
-      <p>VR 트레이 <b>우클릭 → “VR러너 추가…”</b> 에서 계좌를 등록합니다.</p>
+      <p>VR 트레이 <b>우클릭 → “VR러너 추가…”</b> 를 누르면 내 컴퓨터 안에서만 열리는 설정 페이지가 뜹니다. 아래 값을 입력하세요 —
+        키·토큰은 붙여넣기 확인을 위해 <b>평문으로 표시</b>됩니다.</p>
     </div>
-    <div class="placeholder">✍️ <b>여기에 마법사 입력 항목을 채우세요.</b> 항목 표가 필요하면 <code>.tablewrap</code> /
-      <code>&lt;table&gt;</code> 을 사용하세요.</div>
+    <div class="note"><span class="ic">💡</span><div>이 마법사 화면은 아바타 마법사와 같은 골격을 재사용합니다 — 페이지 제목 등에 “아바타” 문구가 남아 있을 수 있지만, 아래 입력 항목은 VR 전용 6가지 값으로 자동 구성되니 신경 쓰지 않아도 됩니다.</div></div>
+    <div class="tablewrap" style="margin-top:16px">
+      <table>
+        <thead><tr><th>구역</th><th>항목</th><th>입력값</th><th>출처</th></tr></thead>
+        <tbody>
+          <tr><td><span class="sec-badge">VR러너</span></td><td><b>이름</b></td><td>트레이에 표시될 계좌 이름 (예: <code>VR장기</code>)</td><td>자유</td></tr>
+          <tr><td><span class="sec-badge">키움</span></td><td><b>앱키</b></td><td>VR 전용 키움 App Key</td><td>준비물 03</td></tr>
+          <tr><td><span class="sec-badge">키움</span></td><td><b>시크릿키</b></td><td>VR 전용 키움 Secret Key</td><td>준비물 03</td></tr>
+          <tr><td><span class="sec-badge">텔레그램</span></td><td><b>봇 토큰</b></td><td>VR 전용 텔레그램 봇 토큰</td><td>준비물 04</td></tr>
+          <tr><td><span class="sec-badge">텔레그램</span></td><td><b>chat_id</b></td><td>텔레그램 chat_id(숫자)</td><td>준비물 04</td></tr>
+          <tr><td><span class="sec-badge">구글 시트</span></td><td><b>시트 URL</b></td><td>내 VR 시트 사본 주소</td><td>준비물 01</td></tr>
+          <tr><td><span class="sec-badge">구글 시트</span></td><td><b>서비스계정 JSON</b></td><td>다운로드(또는 재사용)한 JSON 파일 선택</td><td>준비물 02</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ol class="steps" style="margin-top:22px">
+      <li><b>입력 확인</b> — 값 형식뿐 아니라 <b>VR 시트 레이아웃</b>(Tracker · <code>B4</code> 종목 · <code>J2</code> 검증 띠 · <code>B11</code> 실거래모드=1) · <b>키움 토큰 발급</b> · <b>텔레그램 봇</b> 을 실제로 점검합니다.</li>
+      <li>이상 없으면 <b>저장</b> — 이름 중복만 검사한 뒤 설정 페이지가 자동으로 닫히고 VR 트레이 “VR러너” 목록에 추가됩니다.</li>
+    </ol>
+    <div class="note"><span class="ic">⚠️</span><div>같은 <b>키움 계좌(앱키)</b>를 아바타나 다른 VR러너에 함께 등록하면 저장은 되더라도 <b>실행하는 순간</b> “이미 실행 중” 오류로 즉시 막힙니다. 같은 <b>텔레그램 봇 토큰</b>을 쓰면 폴링 충돌(409)이 납니다. 반드시 별도 계좌·별도 봇 토큰을 준비하세요(01 준비물 참고).</div></div>
   </section>
 
   <!-- 05 · 실행 -->
@@ -470,8 +570,77 @@
       <span class="sec-kicker"><span class="n">05</span> VR러너 실행</span>
       <h2>계좌를 클릭하면 러너가 시작됩니다</h2>
     </div>
-    <div class="placeholder">✍️ <b>여기에 실행·자동시작·텔레그램 확인 내용을 채우세요.</b>
-      단계 목록은 <code>.steps</code>, 명령어 표는 <code>.tablewrap</code> 을 사용하세요.</div>
+    <ol class="steps two">
+      <li>VR 트레이 <b>우클릭 → “VR러너”</b> 에 마우스를 올리면 등록된 계좌 목록이 나옵니다.</li>
+      <li>실행할 <b>계좌 이름을 클릭</b> — 시작되면 메뉴에 <b>체크 표시</b>가 붙습니다.</li>
+      <li>VR러너는 <b>하루 1회 배치</b>로 동작합니다. 기동하면 텔레그램으로 <b>“🚶 VR러너 출근했습니다”</b> 알림이 오고, 상세 상태는 <code>/status</code> 로 확인할 수 있습니다.</li>
+    </ol>
+    <div class="note"><span class="ic">📈</span><div>실행 상태·이벤트(주문 접수·체결·환전 등)는 <b>텔레그램</b>으로 통지되고 <b>구글 시트</b>(Tracker·Trades 탭)에도 기록됩니다. 프로그램 창을 계속 열어둘 필요가 없습니다.</div></div>
+
+    <div class="subhead" style="margin-top:40px"><span class="tag">자동</span> 자동 시작 — 트레이가 뜰 때 계좌를 자동 실행</div>
+    <ol class="steps">
+      <li>VR 트레이 <b>우클릭 → “자동 시작”</b> 에 마우스를 올리면 계좌 목록이 나옵니다.</li>
+      <li><b>자동 시작할 계좌를 클릭</b>해 체크합니다(다시 클릭하면 해제).</li>
+      <li>설정은 <b>다음 트레이 실행부터</b> 적용됩니다 — 트레이가 뜨면 체크된 계좌가 자동 실행되고 <b>풍선 알림</b>으로 알려줍니다.</li>
+    </ol>
+
+    <div class="subhead" style="margin-top:40px"><span class="tag">참고</span> 하루가 어떻게 돌아가나요</div>
+    <p style="margin:0 0 14px; color:var(--ink-soft); font-size:16px">VR러너는 하루를 세 국면(<b>prep → place → settle</b>)으로 나눠 미국 장을 따라 움직이고, 적립·인출 환전은 이와 별도로 <b>한국시간 기준</b>으로 처리합니다.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>국면</th><th>시점</th><th>하는 일</th></tr></thead>
+        <tbody>
+          <tr><td><b>prep</b></td><td>개장 전</td><td>시트를 읽어 오늘 사다리(계획)를 확인하고 텔레그램으로 알림 — 시세(Data)는 시트가 자동 유지하므로 러너는 읽기만 함</td></tr>
+          <tr><td><b>place</b></td><td>마감 전(기본 60분 전)</td><td>오늘의 매수·매도 사다리를 <b>종가 지정가(LOC)</b>로 접수 — 안전장치 통과 시에만</td></tr>
+          <tr><td><b>settle</b></td><td>마감 후</td><td>실제 체결분을 <b>Trades 탭에 자동 기록</b>하고 남은 미체결 정리</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><span class="ic">💡</span><div><b>LOC(지정가 종가 체결)</b> 란 종가에 도달했을 때만 체결되는 주문입니다 — 매수는 종가 ≤ 매수가, 매도는 종가 ≥ 매도가일 때 하루 딱 한 번(장 마감 경매)만 체결이 결정됩니다. 그래서 장중 내내 체결을 확인할 필요가 없습니다.</div></div>
+
+    <div class="subhead" style="margin-top:40px"><span class="tag gold">자동환전</span> 적립·인출 자동 환전 — 시트가 켜고 끕니다</div>
+    <p style="margin:0 0 14px; color:var(--ink-soft); font-size:16px">켜고 끄는 별도 스위치가 없습니다 — <b>시트 값 자체가 자동/수동을 결정</b>합니다.</p>
+    <div class="card" style="margin:0 0 14px">
+      <ul>
+        <li><b>적립</b> — <code>B7</code>(적립금액) &gt; 0 이면, <b>사이클 시작일마다 한국시간 오전 10시</b>에 그 금액만큼 <b>원→달러</b> 자동 환전. <code>B7=0</code>이면 안 함.</li>
+        <li><b>인출</b> — <code>B14</code>(인출모드) = 1 이면, <b>인출 시작일(<code>B15</code>)부터 4주마다</b> 시트가 계산한 금액(<code>B16</code>)만큼 <b>달러→원</b> 자동 환전. <code>B14=0</code>이면 안 함.</li>
+        <li>적립·인출은 <b>서로 독립</b> — 같은 날 둘 다·하나만·아무것도 안 될 수 있습니다. 성공 시 <b>Trades 탭 입금란에 자동 기록</b>됩니다.</li>
+      </ul>
+    </div>
+    <div class="note"><span class="ic">💡</span><div>적립·인출을 켜고 싶으면 시트의 <code>B7</code>·<code>B14</code>/<code>B15</code>를 채우기만 하면 됩니다 — 프로그램 설정에서 따로 켜는 스위치는 없습니다.</div></div>
+
+    <div class="subhead" style="margin-top:40px"><span class="tag">확인</span> 텔레그램으로 실행 확인</div>
+    <p style="margin:0 0 8px; color:var(--ink-soft); font-size:16px">준비물 04에서 등록한 <b>내 대화(chat_id)</b>에서 명령을 보내면 봇이 답합니다 — 먼저 <code>/status</code> 를 보내보세요.</p>
+    <div class="quote"><strong><code>/status</code> 응답 예시(가상)</strong>📅 2026-07-31 · ✅ prep · ⏳ place · ⏳ settle · 다음 작업: place ~15:00 ET</div>
+
+    <div style="font-weight:800; margin:24px 0 10px; font-size:15px; color:var(--accent)">조회 명령</div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>명령어</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><code>/status</code></td><td>오늘 날짜·국면 진행(prep/place/settle) + 다음 작업 시각 — <b>실행 확인의 핵심</b></td></tr>
+          <tr><td><code>/ladder</code></td><td>오늘 사다리 표(수량이 있는 단계만)</td></tr>
+          <tr><td><code>/balance</code></td><td>예수금(USD) · 원화 잔고</td></tr>
+          <tr><td><code>/help</code></td><td>전체 명령 목록 보기</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="font-weight:800; margin:24px 0 10px; font-size:15px; color:var(--gold)">제어 명령</div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>명령어</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><code>/pause</code></td><td>자동 트레이딩(사다리 접수·적립/인출)을 일시정지 — 봇·리스는 계속 살아있음</td></tr>
+          <tr><td><code>/resume</code></td><td>일시정지 해제, 자동 트레이딩 재개</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><span class="ic">🔒</span><div>명령은 준비물 04에서 등록한 <b>chat_id(내 대화)에서만</b> 동작합니다(화이트리스트). VR은 <b>아바타와 달리 수동 주문 명령이 없습니다</b> — 조회·일시정지 위주의 관측 도구입니다. 주문 접수·체결·게이트 실패·자동 환전은 별도 요청 없이 <b>능동 알림</b>으로 옵니다.</div></div>
+
+    <div class="subhead" style="margin-top:40px"><span class="tag">참고</span> 안전장치</div>
+    <p style="margin:0 0 10px; color:var(--ink-soft); font-size:16px">주문 접수 직전 시트 검증 · 가격 데이터 신선도 · 시트-실계좌 잔고 정합 · 한도를 자동 점검해, 하나라도 걸리면 그날 주문을 생략하고 텔레그램으로 경고합니다.</p>
+    <div class="note"><span class="ic">🔐</span><div><b>다른 PC 중복 실행 방지(<code>_Lock</code>)</b> — VR러너는 실행 중 시트의 <code>_Lock</code> 탭에 “내가 실행 중”이라는 표시(리스)를 주기적으로 남깁니다. 다른 PC의 VR러너가 이 표시를 가져가면 원래 있던 쪽은 <b>자동으로 정지</b>하고 텔레그램으로 알립니다 — 같은 계좌는 <b>같은 PC에서만</b> 실행하세요.</div></div>
   </section>
 
   <!-- 06 · 종료 -->
@@ -479,8 +648,24 @@
     <div class="sec-head">
       <span class="sec-kicker"><span class="n">06</span> VR러너 종료</span>
       <h2>계좌 중지 → 앱 종료, 두 단계</h2>
+      <p>VR 트레이는 <b>실행 중인 계좌가 하나라도 있으면 종료되지 않도록</b> 막혀 있습니다.</p>
     </div>
-    <div class="placeholder">✍️ <b>여기에 종료 절차를 채우세요.</b> 아바타 가이드의 06 섹션 구조를 참고하세요.</div>
+
+    <div class="subhead"><span class="tag gold">6-1</span> 계좌 중지</div>
+    <ol class="steps">
+      <li>VR 트레이 <b>우클릭 → “VR러너” → 실행 중(체크된) 계좌 클릭</b>.</li>
+      <li>확인창에서 <b>예</b> 를 누르면 중지가 시작됩니다.</li>
+      <li><b>진행 창</b>이 뜨고, 정지가 끝나면 자동으로 닫힙니다.</li>
+    </ol>
+    <div class="note"><span class="ic">💡</span><div>VR 주문은 <b>마감 직전(기본 60분 전)에만</b> 접수되고 마감 직후 settle 국면에서 자동 정리되므로, 일반적인 시간대에 중지하면 취소할 미체결 주문이 없는 경우가 많습니다.</div></div>
+
+    <div class="subhead"><span class="tag">6-2</span> 트레이 종료</div>
+    <ol class="steps">
+      <li><b>모든 계좌를 중지</b>하면 VR 트레이 <b>“종료”</b> 가 활성화됩니다.</li>
+      <li><b>“종료”</b> 클릭 → 확인창에서 <b>예</b> → VR 트레이가 종료되고 아이콘이 사라집니다(아바타 트레이가 함께 떠 있었다면 영향받지 않습니다).</li>
+    </ol>
+    <div class="note"><span class="ic">⚠️</span><div>강제 종료·전원 차단 등 정상 절차가 아닌 종료에서는, 다음 실행 시 이어서 처리됩니다(그날 처리한 국면은 반복하지 않도록 상태가 저장돼 있습니다). 종료는 반드시 위 절차를 따르세요.</div></div>
+    <div class="note"><span class="ic">🗑️</span><div>더 이상 쓰지 않는 계좌는 <b>중지한 뒤</b> VR 트레이 <b>우클릭 → “VR러너 삭제…”</b> 에서 지울 수 있습니다(확인창이 뜹니다). 실행 중인 계좌는 삭제 목록에 나타나지 않습니다.</div></div>
   </section>
 
   <!-- 부록 -->
@@ -489,7 +674,25 @@
       <span class="sec-kicker"><span class="n">＋</span> 부록 · 문제 해결</span>
       <h2>자주 겪는 문제</h2>
     </div>
-    <div class="placeholder">✍️ <b>여기에 자주 겪는 문제·해결을 채우세요.</b> 증상/해결 2열 표(<code>.tablewrap</code>)가 어울립니다.</div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>증상</th><th>확인 · 해결</th></tr></thead>
+        <tbody>
+          <tr><td><b>VR 트레이 아이콘이 안 보임</b></td><td>트레이의 <code>^</code>(숨겨진 아이콘 표시)를 눌러 확인</td></tr>
+          <tr><td><b>실행 시 “PC 보호” 경고</b></td><td>SmartScreen → <b>추가 정보 → 실행</b></td></tr>
+          <tr><td><b>“VR러너 추가…” 가 비활성</b></td><td>이전 설정 마법사가 아직 열려 있음. 브라우저 탭을 닫고 잠시 뒤 재시도</td></tr>
+          <tr><td><b>[입력 확인]에서 “VR 시트 레이아웃” 실패</b></td><td>Tracker 탭 · <code>B4</code> 종목 · <code>B11</code>=1(실거래모드) · <code>J2</code> 검증 띠 확인</td></tr>
+          <tr><td><b>시세 지연으로 그날 매매가 생략됨</b></td><td>Data 시세(GOOGLEFINANCE)가 지연된 경우 — 시트 메뉴 <b>[VR+] &gt; 가격 새로고침</b>으로 갱신하세요(러너는 Data 를 쓰지 않습니다)</td></tr>
+          <tr><td><b>시트 접근/권한 오류</b></td><td><b>서비스계정 이메일을 이 VR 시트 사본에 편집자로 공유</b>했는지 확인 (준비물 02)</td></tr>
+          <tr><td><b>키움 API 호출 거부</b></td><td><b>실행 PC 공인 IP를 키움에 등록</b>했는지 확인 (준비물 03)</td></tr>
+          <tr><td><b>텔레그램 알림이 안 옴</b></td><td><b>chat_id</b> 가 정확한지, 봇에게 먼저 메시지를 보냈는지 확인</td></tr>
+          <tr><td><b>텔레그램 명령이 뒤섞이거나 무응답</b></td><td><b>봇 토큰이 아바타(또는 다른 VR러너)와 겹치지 않는지</b> 확인(폴링 충돌)</td></tr>
+          <tr><td><b>“이미 실행 중” 으로 기동 거부</b></td><td><b>같은 키움 계좌(앱키)</b>를 아바타나 다른 VR러너에도 등록했는지 확인</td></tr>
+          <tr><td><b>“다른 기기가 리스를 가져감” 알림 후 정지</b></td><td>같은 계좌를 <b>여러 PC에서 동시에</b> 실행하지 않았는지 확인</td></tr>
+          <tr><td><b>적립/인출이 실행되지 않음</b></td><td><code>B7</code>·<code>B14</code>/<code>B15</code> 값과, 사이클 시작일의 <b>한국시간 오전 10시 이후 거래일</b>인지 확인</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 </main>
 
