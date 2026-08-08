@@ -356,6 +356,10 @@
   .shield { max-width: 52ch; }
   .shotslot { margin: 14px 0; padding: 16px 18px; border: 1.6px dashed var(--line, #b9b9b9); border-radius: 12px; color: var(--ink-soft); font-size: 14px; line-height: 1.55; background: rgba(127,127,127,.05); }
   .shotslot code { font-size: 13px; }
+  .shot { margin: 16px 0; }
+  .shot img { display: block; width: 100%; max-width: 100%; height: auto; border: 1px solid var(--line, #d8d8d8); border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+  .shot figcaption { margin-top: 8px; color: var(--ink-soft); font-size: 13.5px; line-height: 1.5; }
+  .shot figcaption code { font-size: 12.5px; }
 
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
@@ -507,7 +511,7 @@
       </table>
     </div>
     <div class="note"><span class="ic">💡</span><div>나머지 설정(<code>B8</code> 수수료율·<code>B9</code> 사다리 단계·<code>B10</code> 리밸런싱 주기·<code>B12</code> 사다리 폭·<code>B13</code> 실시간 행)은 <b>시트 기본값을 그대로</b> 두면 됩니다. <b>적립·인출(<code>B7</code>·<code>B14</code>·<code>B15</code>)</b>은 다음 장(03 적립·자금)에서 설정합니다. K열 상태·사다리표(<code>P5:W16</code>)는 전부 자동 계산이라 건드리지 않습니다.</div></div>
-    <div class="shotslot">📷 <b>캡처 자리</b> — Tracker 기본 설정 입력 모습(<code>B4</code> 종목·<code>B5</code> 시작일·<code>B6</code> 최초 투입금액·<code>B11</code> 거래모드=1)</div>
+    <figure class="shot"><img src="assets/sheet-settings.png" alt="Tracker 기본 설정 — 종목·시작일·최초 투입금액·거래 모드"><figcaption>Tracker 기본 설정 — <code>B4</code> 종목(TQQQ)·<code>B5</code> 시작일·<code>B6</code> 최초 투입금액($5,750)·<code>B11</code> 거래 모드. <b>배포 템플릿은 거래 모드가 <code>0</code>(모델)</b>이니 반드시 <code>1</code>(실거래)로 바꿉니다.</figcaption></figure>
 
     <div class="subhead" style="margin-top:40px"><span class="tag gold">필수</span> 시작일 초기 매수 — 투입금액의 80%</div>
     <p style="margin:0 0 14px; color:var(--ink-soft); font-size:16px">전략은 시작일에 <b>원금의 80%로 종목을 사서 시작</b>합니다(나머지 20%는 예수금 POOL로 남아 이후 매수·리밸런싱에 쓰입니다). 이 <b>첫 매수만 사람이 직접</b> 하고 Trades 탭에 적어 주면, 이후는 VR러너가 이어받습니다.</p>
@@ -516,8 +520,9 @@
       <li><b>Trades 탭에 기록</b> — 체결 결과를 Trades 탭 <code>A:E</code> 한 줄에 적습니다: <b>날짜(=시작일) · 수량 · 체결단가 · 수수료 · 거래금액</b>. (같은 날 나눠 샀으면 여러 줄로 적어도 시트가 날짜별로 합산합니다.)</li>
       <li><b>Tracker에서 확인</b> — Tracker 일별표의 <b>시작일 행</b>에 매수 수량·금액이 뜨고, 상단 <code>K4</code>(보유 수량)·<code>K6</code>(POOL, ≈ 원금의 20%)이 잡히면 <b>시트 준비 완료</b>입니다.</li>
     </ol>
-    <div class="shotslot">📷 <b>캡처 자리</b> — Trades 탭에 적은 시작일 매수 한 줄(날짜·수량·단가·수수료·거래금액)</div>
-    <div class="shotslot">📷 <b>캡처 자리</b> — Tracker 일별표 시작일 행 + 상단 <code>K4</code> 보유수량·<code>K6</code> POOL 이 반영된 모습</div>
+    <figure class="shot"><img src="assets/sheet-trades.png" alt="Trades 탭 — 시작일 초기 매수 기록과 입금란"><figcaption>Trades 탭 — <b>맨 윗줄이 시작일 초기 매수</b>(수량 208·단가·수수료·거래금액). 오른쪽 <code>G:H</code>는 적립 입금란. (배포 템플릿 예시)</figcaption></figure>
+    <figure class="shot"><img src="assets/sheet-daily-start.png" alt="Tracker 일별표 시작일 행 — 최초매수 신호"><figcaption>Tracker 일별표 <b>시작일 행에 “최초매수”</b>가 표시됩니다(맨 오른쪽 신호 열).</figcaption></figure>
+    <figure class="shot"><img src="assets/sheet-status.png" alt="Tracker 상태 — 보유 수량·POOL"><figcaption>상단 상태에 <code>K4</code> 보유 수량·<code>K6</code> POOL 이 잡히면 <b>시트 준비 완료</b>입니다.</figcaption></figure>
 
     <div class="subhead" style="margin-top:40px"><span class="tag gold">시세</span> Data 탭은 그대로 둡니다 — 자동 로딩</div>
     <p style="margin:0 0 14px; color:var(--ink-soft); font-size:16px">Data 탭은 <code>A1</code> 셀의 <code>GOOGLEFINANCE</code> 수식이 시세 전체를 <b>자동으로 채웁니다</b>.
@@ -555,7 +560,7 @@
         <li>환전에 성공하면 그 즉시 <b>Trades 탭 입금란에 자동 기록</b>됩니다(중복 환전 방지 로직 내장).</li>
       </ul>
     </div>
-    <div class="shotslot">📷 <b>캡처 자리</b> — Tracker <code>B7</code> 적립금(및 필요 시 <code>B14</code>/<code>B15</code> 인출) 입력 모습</div>
+    <figure class="shot"><img src="assets/sheet-settings.png" alt="Tracker 적립 금액 B7"><figcaption>Tracker <code>B7</code> <b>적립 금액(사이클당)</b> — 예시 <code>$200</code>. 필요 시 <code>B14</code> 인출 모드·<code>B15</code> 인출 시작일도 같은 기본 설정 화면에서 설정합니다.</figcaption></figure>
     <div class="note"><span class="ic">⚠️</span><div>원화 잔액이 부족하면 그 사이클 적립 환전이 실패하고 텔레그램 경고가 옵니다 — 자동이체 금액·주기가 <code>B7</code>과 맞는지 확인하세요.</div></div>
   </section>
 
