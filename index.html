@@ -354,6 +354,8 @@
   footer .container { display: flex; flex-wrap: wrap; gap: 18px 40px; justify-content: space-between; align-items: flex-start; }
   footer b { color: var(--ink); }
   .shield { max-width: 52ch; }
+  .shotslot { margin: 14px 0; padding: 16px 18px; border: 1.6px dashed var(--line, #b9b9b9); border-radius: 12px; color: var(--ink-soft); font-size: 14px; line-height: 1.55; background: rgba(127,127,127,.05); }
+  .shotslot code { font-size: 13px; }
 
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
@@ -390,10 +392,11 @@
 <nav class="stepnav" aria-label="단계 이동">
   <a href="#prep"><b class="tnum">01</b> 준비물</a>
   <a href="#sheet"><b class="tnum">02</b> 시트 설정</a>
-  <a href="#install"><b class="tnum">03</b> 다운로드·설치</a>
-  <a href="#add"><b class="tnum">04</b> VR러너 추가</a>
-  <a href="#run"><b class="tnum">05</b> 실행</a>
-  <a href="#stop"><b class="tnum">06</b> 종료</a>
+  <a href="#fund"><b class="tnum">03</b> 적립·자금</a>
+  <a href="#install"><b class="tnum">04</b> 다운로드·설치</a>
+  <a href="#add"><b class="tnum">05</b> VR러너 추가</a>
+  <a href="#run"><b class="tnum">06</b> 실행</a>
+  <a href="#stop"><b class="tnum">07</b> 종료</a>
 </nav>
 
 <main>
@@ -414,12 +417,12 @@
           <div><div class="card-src">Google Sheets</div></div>
         </div>
         <h3>이얀 VR V7 시트 사본 만들기</h3>
-        <p>VR러너는 매수·매도 사다리·자금 상태를 시트에서 읽고 체결 결과를 기록합니다. 사용 중인
-          “이얀 VR V7” 시트를 내 계정으로 복사해 씁니다.</p>
+        <p>VR러너는 매수·매도 사다리·자금 상태를 시트에서 읽고 체결 결과를 기록합니다.
+          <a href="https://docs.google.com/spreadsheets/d/1JmI5d8lgb4mfYNAJfHWnUpXKcbaN_wtJ8o4SKNFxNrE/edit" target="_blank" rel="noopener"><b>배포용 템플릿 시트</b></a>를 열어 내 계정으로 사본을 만듭니다.</p>
         <ul>
-          <li>구글 드라이브에서 <b>파일 → 사본 만들기</b></li>
+          <li>템플릿 → <b>파일 → 사본 만들기</b></li>
           <li>사본의 <b>주소창 URL 전체 복사</b></li>
-          <li>사본은 GOOGLEFINANCE 로 시세가 자동 갱신됩니다 — <b>Data 탭은 그대로 둡니다</b></li>
+          <li>복사본은 <b>모델 모드</b> — 02장에서 실거래(<code>1</code>)로 전환. Data 탭은 자동 시세라 그대로</li>
         </ul>
         <div class="feeds">→ 마법사 <b>시트 URL</b></div>
       </article>
@@ -485,41 +488,81 @@
   <section id="sheet" class="container">
     <div class="sec-head">
       <span class="sec-kicker"><span class="n">02</span> 시트 설정</span>
-      <h2>Tracker 값 채우기 (Data 시세는 자동)</h2>
-      <p>준비물 01에서 만든 <b>내 VR 시트 사본</b>을 열어 Tracker 탭의 몇 개 값만 채우면 됩니다.
-        <b>Data 탭(시세)은 GOOGLEFINANCE 로 자동 갱신되니 그대로 두세요</b> — 러너는 Data 를 읽기만 합니다.</p>
+      <h2>기본 설정 + 시작일 초기 매수</h2>
+      <p>준비물 01에서 복사한 <b>내 VR 시트 사본</b>을 열어 Tracker 탭 기본 설정을 채우고,
+        <b>시작일에 최초 투입금액의 80%를 매수해 Trades 탭에 기록</b>하면 시트 준비가 끝납니다.
+        복사한 시트는 <b>모델 모드(<code>B11</code>=0)</b>로 오니, 실제 운용하려면 아래처럼 <b>실거래 모드(1)</b>로 바꿉니다.</p>
     </div>
 
-    <div class="subhead"><span class="tag">Tracker</span> 채울 값</div>
+    <div class="subhead"><span class="tag">Tracker</span> 기본 설정</div>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>셀</th><th>이름</th><th>무엇인가</th><th>넣을 값</th></tr></thead>
+        <thead><tr><th>셀</th><th>이름</th><th>넣을 값</th></tr></thead>
         <tbody>
-          <tr><td><code>B4</code></td><td><b>종목</b></td><td>운용할 종목 티커</td><td>예: <code>TQQQ</code></td></tr>
-          <tr><td><code>B5</code></td><td><b>시작일</b></td><td>전략(V 목표선) 시작일</td><td>최초 설정 시 1회</td></tr>
-          <tr><td><code>B7</code></td><td><b>적립금액(USD)</b></td><td>사이클 시작일마다 원→달러로 자동 환전할 금액</td><td>예(가상): <code>$100</code>, <code>0</code>=끔</td></tr>
-          <tr><td><code>B8</code></td><td><b>수수료율</b></td><td>매매 수수료율</td><td>시트 기본값 유지 권장</td></tr>
-          <tr><td><code>B9</code></td><td><b>사다리 단계</b></td><td>매수·매도 단계 수(1~12)</td><td>시트 기본값 권장</td></tr>
-          <tr><td><code>B10</code></td><td><b>리밸런싱 주기</b></td><td>몇 주마다 리밸런싱할지</td><td>시트 기본값 권장</td></tr>
-          <tr><td><code>B11</code></td><td><b>거래 모드</b></td><td>실거래 여부</td><td><b>반드시 <code>1</code></b>(실행 필수 조건)</td></tr>
-          <tr><td><code>B12</code></td><td><b>사다리 폭</b></td><td>사다리 단당 가격 간격</td><td>시트 기본값 권장</td></tr>
-          <tr><td><code>B14</code></td><td><b>인출 모드</b></td><td><code>1</code>=자동 인출 켬</td><td>정기 인출 원하면 <code>1</code></td></tr>
-          <tr><td><code>B15</code></td><td><b>인출 시작일</b></td><td>이 날부터 4주마다 인출 발동</td><td><code>B14=1</code> 일 때만</td></tr>
+          <tr><td><code>B4</code></td><td><b>종목</b></td><td>운용할 종목 티커 — 예: <code>TQQQ</code></td></tr>
+          <tr><td><code>B5</code></td><td><b>시작일</b></td><td><b>가능한(최근) 거래일</b>로 설정 — 이 날부터 전략이 시작됩니다</td></tr>
+          <tr><td><code>B6</code></td><td><b>최초 투입금액</b></td><td>처음 넣을 원금(USD) — 예(가상): <code>$5,750</code>. <b>이 금액이 예수금(POOL)의 시작값</b>이 됩니다</td></tr>
+          <tr><td><code>B11</code></td><td><b>거래 모드</b></td><td><b>반드시 <code>1</code>(실거래)</b> — 복사 직후엔 <code>0</code>(모델)이라 꼭 바꿉니다</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="note"><span class="ic">💡</span><div><b><code>B16</code>(인출액)은 손대지 마세요</b> — 보유 자산(<code>K7</code>)의 일정 비율로 시트가 자동 계산합니다. K열 상태·사다리표(<code>P5:W16</code>)도 전부 자동 계산이라 건드리지 않습니다.</div></div>
+    <div class="note"><span class="ic">💡</span><div>나머지 설정(<code>B8</code> 수수료율·<code>B9</code> 사다리 단계·<code>B10</code> 리밸런싱 주기·<code>B12</code> 사다리 폭·<code>B13</code> 실시간 행)은 <b>시트 기본값을 그대로</b> 두면 됩니다. <b>적립·인출(<code>B7</code>·<code>B14</code>·<code>B15</code>)</b>은 다음 장(03 적립·자금)에서 설정합니다. K열 상태·사다리표(<code>P5:W16</code>)는 전부 자동 계산이라 건드리지 않습니다.</div></div>
+    <div class="shotslot">📷 <b>캡처 자리</b> — Tracker 기본 설정 입력 모습(<code>B4</code> 종목·<code>B5</code> 시작일·<code>B6</code> 최초 투입금액·<code>B11</code> 거래모드=1)</div>
+
+    <div class="subhead" style="margin-top:40px"><span class="tag gold">필수</span> 시작일 초기 매수 — 투입금액의 80%</div>
+    <p style="margin:0 0 14px; color:var(--ink-soft); font-size:16px">전략은 시작일에 <b>원금의 80%로 종목을 사서 시작</b>합니다(나머지 20%는 예수금 POOL로 남아 이후 매수·리밸런싱에 쓰입니다). 이 <b>첫 매수만 사람이 직접</b> 하고 Trades 탭에 적어 주면, 이후는 VR러너가 이어받습니다.</p>
+    <ol class="steps">
+      <li><b>실제 매수</b> — 시작일(<code>B5</code>)에 키움에서 <b>최초 투입금액의 80%</b>만큼 종목을 매수합니다(예: <code>B6</code>=$5,750 → 약 <b>$4,600</b> 매수).</li>
+      <li><b>Trades 탭에 기록</b> — 체결 결과를 Trades 탭 <code>A:E</code> 한 줄에 적습니다: <b>날짜(=시작일) · 수량 · 체결단가 · 수수료 · 거래금액</b>. (같은 날 나눠 샀으면 여러 줄로 적어도 시트가 날짜별로 합산합니다.)</li>
+      <li><b>Tracker에서 확인</b> — Tracker 일별표의 <b>시작일 행</b>에 매수 수량·금액이 뜨고, 상단 <code>K4</code>(보유 수량)·<code>K6</code>(POOL, ≈ 원금의 20%)이 잡히면 <b>시트 준비 완료</b>입니다.</li>
+    </ol>
+    <div class="shotslot">📷 <b>캡처 자리</b> — Trades 탭에 적은 시작일 매수 한 줄(날짜·수량·단가·수수료·거래금액)</div>
+    <div class="shotslot">📷 <b>캡처 자리</b> — Tracker 일별표 시작일 행 + 상단 <code>K4</code> 보유수량·<code>K6</code> POOL 이 반영된 모습</div>
 
     <div class="subhead" style="margin-top:40px"><span class="tag gold">시세</span> Data 탭은 그대로 둡니다 — 자동 로딩</div>
     <p style="margin:0 0 14px; color:var(--ink-soft); font-size:16px">Data 탭은 <code>A1</code> 셀의 <code>GOOGLEFINANCE</code> 수식이 시세 전체를 <b>자동으로 채웁니다</b>.
       VR러너는 이 값을 <b>읽기만</b> 하고 절대 쓰지 않으므로, Data 탭은 <b>손대지 말고 그대로 두면 됩니다</b>(예전의 “값 고정 마이그레이션”은 필요 없어졌습니다).</p>
-    <div class="note"><span class="ic">⚠️</span><div>Data 탭에 <b>직접 값을 써넣지 마세요</b> — GOOGLEFINANCE 자동 영역(스필)을 덮어쓰면 표가 <code>#REF!</code> 로 무너집니다. 시세가 며칠 지연돼 04장 “입력 확인”이나 매매 안전장치에서 <b>“가격 지연”</b>으로 걸리면, 시트 메뉴 <b>[VR+] &gt; 가격 새로고침</b>으로 갱신하세요(러너가 대신 쓰지 않습니다).</div></div>
+    <div class="note"><span class="ic">⚠️</span><div>Data 탭에 <b>직접 값을 써넣지 마세요</b> — GOOGLEFINANCE 자동 영역(스필)을 덮어쓰면 표가 <code>#REF!</code> 로 무너집니다. 시세가 며칠 지연돼 매매 안전장치에서 <b>“가격 지연”</b>으로 걸리면, 시트 메뉴 <b>[VR+] &gt; 가격 새로고침</b>으로 갱신하세요(러너가 대신 쓰지 않습니다).</div></div>
   </section>
 
-  <!-- 03 · 다운로드·설치 -->
+  <!-- 03 · 적립·자금 -->
+  <section id="fund" class="container">
+    <div class="sec-head">
+      <span class="sec-kicker"><span class="n">03</span> 적립 · 자금 이체</span>
+      <h2>적립금 정하고, 원화로 자동이체 걸어두기</h2>
+      <p>정기 적립을 원하면 Tracker <code>B7</code>에 <b>사이클(2주)당 적립금</b>을 적고, 그 자금을 <b>원화로 증권계좌에 자동이체</b>해 둡니다 — 사이클 시작일마다 VR러너가 알아서 원→달러 환전해 넣습니다.</p>
+    </div>
+
+    <div class="subhead"><span class="tag">Tracker</span> 적립·인출 설정</div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>셀</th><th>이름</th><th>넣을 값</th></tr></thead>
+        <tbody>
+          <tr><td><code>B7</code></td><td><b>적립 금액(사이클당)</b></td><td>2주마다 넣을 금액(USD) — 예: <code>$100</code> · <code>$200</code>. <code>0</code>이면 적립 안 함</td></tr>
+          <tr><td><code>B14</code></td><td><b>인출 모드</b>(선택)</td><td><code>1</code>=자동 인출 켬 / <code>0</code>=끔. 정기 인출을 원할 때만 <code>1</code></td></tr>
+          <tr><td><code>B15</code></td><td><b>인출 시작일</b>(선택)</td><td><code>B14=1</code>일 때 — 이 날부터 4주마다 자동 인출</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><span class="ic">💡</span><div><b><code>B16</code>(인출액)은 손대지 마세요</b> — 보유 자산에서 시트가 자동 계산(연 4%·4주 기준)합니다. 켜고 끄는 별도 스위치는 없습니다 — <b>시트 값(<code>B7</code>·<code>B14</code>)이 곧 자동/수동을 결정</b>합니다.</div></div>
+
+    <div class="subhead" style="margin-top:40px"><span class="tag gold">자금</span> 적립금은 원화로 자동이체 — 매주 절반씩</div>
+    <p style="margin:0 0 14px; color:var(--ink-soft); font-size:16px"><code>B7</code>은 <b>2주(한 사이클)치 적립금</b>입니다. 사이클 시작일에 환전이 나가려면 그때까지 계좌에 원화가 준비돼 있어야 하므로, <b>매주 <code>B7</code>의 1/2</b>을 원화로 증권계좌에 자동이체해 두는 것을 권합니다.</p>
+    <div class="card" style="margin:0 0 14px">
+      <ul>
+        <li>예: <code>B7</code>=$200(2주치) → <b>매주 $100어치 원화</b>를 증권계좌로 자동이체.</li>
+        <li><b>원화로 넣어두면 됩니다</b> — 사이클 시작일 한국시간 오전 10시에 VR러너가 <b>원→달러로 자동 환전</b>해 적립합니다.</li>
+        <li>환전에 성공하면 그 즉시 <b>Trades 탭 입금란에 자동 기록</b>됩니다(중복 환전 방지 로직 내장).</li>
+      </ul>
+    </div>
+    <div class="shotslot">📷 <b>캡처 자리</b> — Tracker <code>B7</code> 적립금(및 필요 시 <code>B14</code>/<code>B15</code> 인출) 입력 모습</div>
+    <div class="note"><span class="ic">⚠️</span><div>원화 잔액이 부족하면 그 사이클 적립 환전이 실패하고 텔레그램 경고가 옵니다 — 자동이체 금액·주기가 <code>B7</code>과 맞는지 확인하세요.</div></div>
+  </section>
+
+  <!-- 04 · 다운로드·설치 -->
   <section id="install" class="container">
     <div class="sec-head">
-      <span class="sec-kicker"><span class="n">03</span> 다운로드 &amp; 설치</span>
+      <span class="sec-kicker"><span class="n">04</span> 다운로드 &amp; 설치</span>
       <h2>받아서 실행하면 트레이에 상주합니다</h2>
       <p>VR 러너는 설치가 필요 없는 단일 실행 파일(<code>VR.exe</code>)입니다. 아바타 트레이(<code>Avatar.exe</code>)와는
         완전히 별개 프로그램이라, 같은 PC에 둘 다 설치해도 서로 독립적으로 동작합니다.</p>
@@ -534,10 +577,10 @@
     <div class="note"><span class="ic">🔄</span><div><b>업데이트는 자동입니다.</b> VR 트레이는 매일 <b>프리장 시작 때</b> VR 전용 릴리즈에서 새 버전을 확인해 스스로 업데이트하고, 실행 중이던 VR러너는 업데이트 후 <b>자동으로 다시 시작</b>됩니다(아바타 업데이트와는 완전히 분리된 경로입니다 — 서로의 버전·릴리즈에 영향을 주지 않습니다). 지금 바로 확인하려면 트레이 <b>우클릭 → “업데이트 확인”</b> 을 누르세요.</div></div>
   </section>
 
-  <!-- 04 · VR러너 추가 -->
+  <!-- 05 · VR러너 추가 -->
   <section id="add" class="container">
     <div class="sec-head">
-      <span class="sec-kicker"><span class="n">04</span> VR러너 추가 · 설정 마법사</span>
+      <span class="sec-kicker"><span class="n">05</span> VR러너 추가 · 설정 마법사</span>
       <h2>준비한 값을 넣어 계좌를 등록</h2>
       <p>VR 트레이 <b>우클릭 → “VR러너 추가…”</b> 를 누르면 내 컴퓨터 안에서만 열리는 설정 페이지가 뜹니다. 아래 값을 입력하세요 —
         키·토큰은 붙여넣기 확인을 위해 <b>평문으로 표시</b>됩니다.</p>
@@ -564,10 +607,10 @@
     <div class="note"><span class="ic">⚠️</span><div>같은 <b>키움 계좌(앱키)</b>를 아바타나 다른 VR러너에 함께 등록하면 저장은 되더라도 <b>실행하는 순간</b> “이미 실행 중” 오류로 즉시 막힙니다. 같은 <b>텔레그램 봇 토큰</b>을 쓰면 폴링 충돌(409)이 납니다. 반드시 별도 계좌·별도 봇 토큰을 준비하세요(01 준비물 참고).</div></div>
   </section>
 
-  <!-- 05 · 실행 -->
+  <!-- 06 · 실행 -->
   <section id="run" class="container">
     <div class="sec-head">
-      <span class="sec-kicker"><span class="n">05</span> VR러너 실행</span>
+      <span class="sec-kicker"><span class="n">06</span> VR러너 실행</span>
       <h2>계좌를 클릭하면 러너가 시작됩니다</h2>
     </div>
     <ol class="steps two">
@@ -598,16 +641,8 @@
     </div>
     <div class="note"><span class="ic">💡</span><div><b>LOC(지정가 종가 체결)</b> 란 종가에 도달했을 때만 체결되는 주문입니다 — 매수는 종가 ≤ 매수가, 매도는 종가 ≥ 매도가일 때 하루 딱 한 번(장 마감 경매)만 체결이 결정됩니다. 그래서 장중 내내 체결을 확인할 필요가 없습니다.</div></div>
 
-    <div class="subhead" style="margin-top:40px"><span class="tag gold">자동환전</span> 적립·인출 자동 환전 — 시트가 켜고 끕니다</div>
-    <p style="margin:0 0 14px; color:var(--ink-soft); font-size:16px">켜고 끄는 별도 스위치가 없습니다 — <b>시트 값 자체가 자동/수동을 결정</b>합니다.</p>
-    <div class="card" style="margin:0 0 14px">
-      <ul>
-        <li><b>적립</b> — <code>B7</code>(적립금액) &gt; 0 이면, <b>사이클 시작일마다 한국시간 오전 10시</b>에 그 금액만큼 <b>원→달러</b> 자동 환전. <code>B7=0</code>이면 안 함.</li>
-        <li><b>인출</b> — <code>B14</code>(인출모드) = 1 이면, <b>인출 시작일(<code>B15</code>)부터 4주마다</b> 시트가 계산한 금액(<code>B16</code>)만큼 <b>달러→원</b> 자동 환전. <code>B14=0</code>이면 안 함.</li>
-        <li>적립·인출은 <b>서로 독립</b> — 같은 날 둘 다·하나만·아무것도 안 될 수 있습니다. 성공 시 <b>Trades 탭 입금란에 자동 기록</b>됩니다.</li>
-      </ul>
-    </div>
-    <div class="note"><span class="ic">💡</span><div>적립·인출을 켜고 싶으면 시트의 <code>B7</code>·<code>B14</code>/<code>B15</code>를 채우기만 하면 됩니다 — 프로그램 설정에서 따로 켜는 스위치는 없습니다.</div></div>
+    <div class="subhead" style="margin-top:40px"><span class="tag gold">자동환전</span> 적립·인출 자동 환전</div>
+    <p style="margin:0 0 14px; color:var(--ink-soft); font-size:16px">적립(<code>B7</code>)·인출(<code>B14</code>/<code>B15</code>)은 <b>사이클 시작일 한국시간 오전 10시</b>에 US 장과 별개로 자동 처리됩니다 — 적립은 원→달러, 인출은 달러→원. 성공 시 <b>Trades 탭 입금란에 자동 기록</b>됩니다. (설정·자동이체는 <b>03 적립·자금</b> 참고.)</p>
 
     <div class="subhead" style="margin-top:40px"><span class="tag">확인</span> 텔레그램으로 실행 확인</div>
     <p style="margin:0 0 8px; color:var(--ink-soft); font-size:16px">준비물 04에서 등록한 <b>내 대화(chat_id)</b>에서 명령을 보내면 봇이 답합니다 — 먼저 <code>/status</code> 를 보내보세요.</p>
@@ -643,10 +678,10 @@
     <div class="note"><span class="ic">🔐</span><div><b>다른 PC 중복 실행 방지(<code>_Lock</code>)</b> — VR러너는 실행 중 시트의 <code>_Lock</code> 탭에 “내가 실행 중”이라는 표시(리스)를 주기적으로 남깁니다. 다른 PC의 VR러너가 이 표시를 가져가면 원래 있던 쪽은 <b>자동으로 정지</b>하고 텔레그램으로 알립니다 — 같은 계좌는 <b>같은 PC에서만</b> 실행하세요.</div></div>
   </section>
 
-  <!-- 06 · 종료 -->
+  <!-- 07 · 종료 -->
   <section id="stop" class="container">
     <div class="sec-head">
-      <span class="sec-kicker"><span class="n">06</span> VR러너 종료</span>
+      <span class="sec-kicker"><span class="n">07</span> VR러너 종료</span>
       <h2>계좌 중지 → 앱 종료, 두 단계</h2>
       <p>VR 트레이는 <b>실행 중인 계좌가 하나라도 있으면 종료되지 않도록</b> 막혀 있습니다.</p>
     </div>
